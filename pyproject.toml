@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "contamate-local"
+version = "0.2.0"
+description = "ContaMate Local: PoC CLI de revisión documental contable peruana"
+requires-python = ">=3.11"
+dependencies = ["defusedxml>=0.7.1,<1", "openpyxl>=3.1,<4", "pypdf>=5,<7", "psutil>=5.9,<8"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "httpx>=0.27,<1", "fastapi>=0.115,<1", "python-multipart>=0.0.20,<1"]
+web = ["fastapi>=0.115,<1", "uvicorn>=0.34,<1", "python-multipart>=0.0.20,<1"]
+
+[project.scripts]
+contamate = "contamate.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

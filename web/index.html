@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>ContaMate Local · Panel de trabajo</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Navegación principal">
+      <div class="brand"><span class="mark">C</span><div><b>ContaMate</b><small>LOCAL · PERÚ</small></div></div>
+      <p class="side-heading">ESPACIO DE TRABAJO</p>
+      <a class="navlink active" href="#summary">◉ &nbsp; Resumen</a>
+      <a class="navlink" href="#issues">▤ &nbsp; Hallazgos</a>
+      <a class="navlink" href="#assistant">◇ &nbsp; Asistente</a>
+      <a class="navlink" href="#tasks">✓ &nbsp; Pendientes</a>
+      <div class="sidebar-bottom"><span class="status-dot"></span> Solo procesamiento local <span class="subtle">·</span> PoC / MVP-001<br><small>Sin validación automática SUNAT</small></div>
+    </aside>
+    <main class="content">
+      <header class="topbar">
+        <div><p class="eyebrow">WORKSPACE / OPERACIONES</p><h1>Centro de revisión</h1><p class="subheading">Analiza documentación y prepara evidencia por empresa.</p></div>
+        <div class="top-status" id="runtimeBadge" aria-live="polite">● Sin conexión autenticada</div>
+      </header>
+      <section class="authbox" aria-label="Conexión local">
+        <label>Clave de acceso local <input id="token" type="password" placeholder="Token de .env" autocomplete="off"></label>
+        <button id="connect">Conectar</button>
+        <span class="muted small">La clave se mantiene solo en esta pestaña. Acceso: localhost.</span>
+      </section>
+      <div class="notice" role="note">Herramienta experimental para revisión profesional. Ningún hallazgo acredita la aceptación de un comprobante ante SUNAT.</div>
+      <section class="panel selector" id="summary">
+        <div class="section-head"><div><h2>Empresa y período</h2><p>Selección independiente por RUC</p></div><button class="ghost" id="refresh">Actualizar</button></div>
+        <div class="selection-grid"><label>Empresa<select id="company"><option value="">Selecciona una empresa</option></select></label><label>Período<input id="period" type="month" value="2026-09"></label><div class="actions"><button id="scan">Escanear archivos</button><button class="secondary" id="review">Revisar</button><button class="ghost" id="report">Descargar informe</button></div></div>
+        <details class="config"><summary>Configurar empresa y carpeta autorizada</summary><div class="settings-grid"><label>RUC<input id="newRuc" placeholder="11 dígitos" inputmode="numeric" maxlength="11"></label><label>Razón social<input id="newName" placeholder="Empresa de prueba"></label><button class="secondary" id="addCompany">Registrar empresa</button><label>Ruta autorizada (contenedor)<input id="folder" placeholder="/imports/cliente_a"></label><button class="secondary" id="allow">Autorizar lectura</button></div><p class="hint">Coloca tus archivos en <code>./imports/cliente_a</code>. Dentro de Docker, la ruta será <code>/imports/cliente_a</code>. No hay subida de archivos por el navegador.</p></details>
+      </section>
+      <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+      <section class="stat-grid" aria-label="Indicadores de revisión">
+        <div class="stat"><span>XML de compras</span><strong id="xmlCount">—</strong><small>Importados en el período</small></div>
+        <div class="stat"><span>Registros</span><strong id="regCount">—</strong><small>Filas reconocidas</small></div>
+        <div class="stat"><span>Coincidencias</span><strong id="matchCount">—</strong><small>Claves comparadas</small></div>
+        <div class="stat critical"><span>Hallazgos</span><strong id="issueCount">—</strong><small>Requieren revisión humana</small></div>
+      </section>
+      <section class="panel" id="issues"><div class="section-head"><div><h2>Hallazgos y evidencias</h2><p>Importe, fecha, moneda, faltantes o duplicados</p></div><span class="chip">Trazabilidad documental</span></div><div id="issueList" class="issues"><p class="placeholder">Selecciona empresa y período, y ejecuta una revisión.</p></div></section>
+      <section class="columns">
+        <div class="panel" id="assistant"><div class="section-head"><div><h2>Asistente contextual</h2><p>Consulta los hallazgos con Ollama local</p></div><span class="chip">IA opcional</span></div><div class="chat"><div id="answer" class="assistant-answer" aria-live="polite">Pregúntame por una diferencia específica. Solo analizaré información registrada y fuentes locales.</div><label for="question">Tu pregunta</label><textarea id="question" rows="3" placeholder="¿Qué documentos explican las diferencias de septiembre?"></textarea><div class="button-row"><button id="ask">Consultar</button><button class="secondary" id="mic" title="Grabar y transcribir voz local">🎙 Dictar</button><button class="ghost" id="speak" title="Escuchar respuesta con Piper">▶ Escuchar</button></div><small>Voz opcional con <code>--profile voice</code>. El micrófono solo se activa al presionar Dictar.</small></div></div>
+        <div class="panel" id="tasks"><div class="section-head"><div><h2>Pendientes</h2><p>Seguimiento por empresa</p></div></div><form id="taskForm"><label>Tarea nueva<input id="taskTitle" placeholder="Solicitar comprobante faltante" required></label><label>Vencimiento<input id="taskDate" type="date"></label><button type="submit">Agregar pendiente</button></form><div id="taskList" class="task-list"><p class="placeholder">Sin tareas cargadas.</p></div></div>
+      </section>
+      <footer>ContaMate Local · MVP-001 · Datos en tu equipo · Resultados sujetos a revisión profesional.</footer>
+    </main>
+  </div>
+</body>
+</html>

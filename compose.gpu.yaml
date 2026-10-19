@@ -1,0 +1,10 @@
+# NVIDIA Container Toolkit + GPU compatible requeridos. Ej.: docker compose -f compose.yaml -f compose.gpu.yaml up -d
+services:
+  ollama:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

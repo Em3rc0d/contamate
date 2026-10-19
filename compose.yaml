@@ -1,0 +1,131 @@
+name: contamate
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8765:8765"
+    env_file:
+      - .env
+    environment:
+      CONTAMATE_HOME: /data
+      CONTAMATE_DOCKER: "1"
+      CONTAMATE_OLLAMA_URL: http://ollama:11434
+      CONTAMATE_VOICE_URL: http://voice:8780
+      CONTAMATE_OLLAMA_BUDGET_GIB: ${CONTAMATE_OLLAMA_BUDGET_GIB:-4}
+    volumes:
+      - contamate_data:/data
+      - ./imports:/imports:ro
+      - ./samples:/samples:ro
+    depends_on:
+      ollama:
+        condition: service_started
+    networks:
+      - local
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    pids_limit: 200
+    mem_limit: 1g
+    cpus: 1.5
+  ollama:
+    image: ollama/ollama:latest
+    init: true
+    restart: unless-stopped
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_NO_CLOUD: "1"
+      OLLAMA_NUM_PARALLEL: ${OLLAMA_NUM_PARALLEL:-1}
+      OLLAMA_MAX_LOADED_MODELS: ${OLLAMA_MAX_LOADED_MODELS:-1}
+      OLLAMA_CONTEXT_LENGTH: ${OLLAMA_CONTEXT_LENGTH:-2048}
+      OLLAMA_KEEP_ALIVE: 30s
+    volumes:
+      - ollama_models:/root/.ollama
+    networks:
+      - local
+    security_opt:
+      - no-new-privileges:true
+    # No exponer 11434 en el host: el app accede por la red privada del compose.
+    mem_limit: ${OLLAMA_MEMORY_LIMIT:-4g}
+    cpus: 4
+    pids_limit: 512
+  tests:
+    profiles: ["test"]
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      CONTAMATE_HOME: /tmp/contamate-test-data
+    network_mode: none
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 1g
+    cpus: 1
+    pids_limit: 120
+  scheduler:
+    profiles: ["watch"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["python", "scripts/scheduler.py", "--interval", "300"]
+    init: true
+    healthcheck:
+      disable: true
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      CONTAMATE_HOME: /data
+      CONTAMATE_DOCKER: "1"
+    volumes:
+      - contamate_data:/data
+      - ./imports:/imports:ro
+      - ./samples:/samples:ro
+    depends_on:
+      app:
+        condition: service_started
+    networks:
+      - local
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 512m
+    cpus: 0.5
+    pids_limit: 100
+  voice:
+    profiles: ["voice"]
+    build:
+      context: .
+      dockerfile: Dockerfile.voice
+    init: true
+    restart: unless-stopped
+    environment:
+      VOICE_STT_MODEL: ${VOICE_STT_MODEL:-tiny}
+      VOICE_PIPER_MODEL: /voices/es.onnx
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    volumes:
+      - voice_models:/voice-models
+      - ./voices:/voices:ro
+    networks:
+      - local
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 256
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+networks:
+  local:
+    driver: bridge
+volumes:
+  contamate_data:
+  ollama_models:
+  voice_models:

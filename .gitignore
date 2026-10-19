@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+imports/*
+!imports/.gitkeep
+voices/*.onnx
+voices/*.onnx.json
+*.sqlite3
+demo-output/
