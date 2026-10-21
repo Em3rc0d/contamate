@@ -60,4 +60,4 @@ Este repositorio es **público**; no subas credenciales SOL, tokens, archivos de
 
 **No se ha seleccionado una licencia de distribución.** El hecho de que el repositorio sea público no concede automáticamente permisos de uso, modificación o redistribución. Antes de abrirlo a contribuciones o distribuir el producto, elegir una licencia y revisar dependencias, especialmente voz Piper.
 
-[Guía completa de ejecución](docs/USER_GUIDE.md) · [Contrato funcional](docs/MVP_CONTRACT.md) · [Criterios de aceptación](docs/MVP001_ACCEPTANCE.md) · [Estado de evidencia](docs/TRACEABILITY.md)
+[Guía completa de ejecución](docs/USER_GUIDE.md) · [Contrato funcional](docs/MVP_CONTRACT.md) · [Evaluación de motores contables externos](docs/EXTERNAL-ACCOUNTING-CANDIDATES-2026-10-21.md) · [Criterios de aceptación](docs/MVP001_ACCEPTANCE.md) · [Estado de evidencia](docs/TRACEABILITY.md)

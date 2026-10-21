@@ -10,5 +10,6 @@ Este directorio conserva los contratos y manuales técnicos extraídos de la ent
 - [Aceptación MVP-001](MVP001_ACCEPTANCE.md)
 - [Matriz de trazabilidad y evidencia](TRACEABILITY.md)
 - [Decisiones de arquitectura](DECISIONS.md)
+- [Gate para incorporar motores contables externos — 2026-10-21](EXTERNAL-ACCOUNTING-CANDIDATES-2026-10-21.md)
 
 **Jerarquía:** código/pruebas reproducibles > observaciones fechadas > hipótesis del producto. Los documentos de descubrimiento no deben presentarse como investigación de mercado validada.
